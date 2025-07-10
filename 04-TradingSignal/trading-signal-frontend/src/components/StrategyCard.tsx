@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,14 +36,53 @@ export const StrategyCard = (props: StrategyCardProps) => {
   const handleFollowClick = () => {
     if (status === "unfollow") {
       setStatus("following");
+      fetch("http://127.0.0.1:5000/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}), // 暂时不传参数
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("后端响应:", data);
+        })
+        .catch((error) => {
+          console.error("调用后端接口出错:", error);
+        });
     } else if (status === "following") {
       setStatus("paused");
-    }
-    
-    else if (status === "paused") {
+      fetch("http://127.0.0.1:5000/unsubscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}), // 暂时不传参数
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("后端响应:", data);
+        })
+        .catch((error) => {
+          console.error("调用后端接口出错:", error);
+        });
+    } else if (status === "paused") {
       setStatus("following");
+      fetch("http://127.0.0.1:5000/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}), // 暂时不传参数
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("后端响应:", data);
+        })
+        .catch((error) => {
+          console.error("调用后端接口出错:", error);
+        });
     }
-    // TODO: 在这里调用后端接口
   };
 
   const formatCurrency = (amount: number) => {
@@ -68,15 +106,19 @@ export const StrategyCard = (props: StrategyCardProps) => {
               <p className="text-sm text-muted-foreground">{platform}</p>
             </div>
           </div>
-          <Badge 
+          <Badge
             variant={status === "following" ? "default" : "secondary"}
-            className={status === "following" ? "bg-green-500/10 text-green-500 border-green-500/20" : ""}
+            className={
+              status === "following"
+                ? "bg-green-500/10 text-green-500 border-green-500/20"
+                : ""
+            }
           >
             {status === "following" ? "跟单中" : "已暂停"}
           </Badge>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
@@ -110,13 +152,20 @@ export const StrategyCard = (props: StrategyCardProps) => {
               )}
               30日收益率
             </p>
-            <p className={`font-semibold ${monthlyReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-              {monthlyReturn >= 0 ? '+' : ''}{monthlyReturn.toFixed(2)}%
+            <p
+              className={`font-semibold ${
+                monthlyReturn >= 0 ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {monthlyReturn >= 0 ? "+" : ""}
+              {monthlyReturn.toFixed(2)}%
             </p>
           </div>
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground">最大回撤</p>
-            <p className="font-semibold text-red-500">-{Math.abs(maxDrawdown).toFixed(2)}%</p>
+            <p className="font-semibold text-red-500">
+              -{Math.abs(maxDrawdown).toFixed(2)}%
+            </p>
           </div>
         </div>
 
@@ -124,9 +173,9 @@ export const StrategyCard = (props: StrategyCardProps) => {
           <Button variant="outline" size="sm" className="flex-1">
             调整金额
           </Button>
-          <Button 
-            variant={status === "following" ? "destructive" : "default"} 
-            size="sm" 
+          <Button
+            variant={status === "following" ? "destructive" : "default"}
+            size="sm"
             className="flex-1"
             onClick={handleFollowClick}
           >
