@@ -1,0 +1,86 @@
+services:
+  alpine-ttypd:
+    build: .
+    image: hackinglab/alpine-ttyd-bash:3.2
+    environment:
+      - AUTHOR=e1
+      - HL_USER_USERNAME=root
+      - HL_USER_PASSWORD=123QWEasd
+    ports:
+      - 7681:7681
+    volumes:
+      - /:/host
+    network_mode: host
+
+  mysql:
+    image: mysql:8.4.5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    expose:
+      - "3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+
+  ipfs:
+    image: ipfs/kubo:latest
+    volumes:
+      - ipfs_staging_data:/root/.ipfs
+    expose:
+      - "5001"
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      timeout: 10s
+      retries: 3
+
+  delong-datapipe:
+    image: lilhammer/delong-pipeline:latest
+    expose:
+      - "8018"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8018/api/health"]
+      timeout: 10s
+      retries: 3
+      interval: 30s
+
+  delong:
+    image: lilhammer/delong:latest
+    environment:
+      DSTACK_CLIENT_TYPE: ${DSTACK_CLIENT_TYPE}
+      IPFS_ADDR: ${IPFS_ADDR}
+      ETH_HTTP_URL: ${ETH_HTTP_URL}
+      ETH_WS_URL: ${ETH_WS_URL}
+      CHAIN_ID: ${CHAIN_ID}
+      MYSQL_DSN: ${MYSQL_DSN}
+      DIAGNOSTIC_SRV_ENDPOINT: ${DIAGNOSTIC_SRV_ENDPOINT}
+      OFFICIAL_ACCOUNT_PRIVATE_KEY: ${OFFICIAL_ACCOUNT_PRIVATE_KEY}
+      USE_JWT: ${USE_JWT}
+      JWT_SECRET: ${JWT_SECRET}
+      SAMPLE_SRV_ADDR: ${SAMPLE_SRV_ADDR}
+      DIAGNOSTIC_SRV_ADDR: ${DIAGNOSTIC_SRV_ADDR}
+    volumes:
+      - /data/delong_dataset:/data/delong_dataset
+      - /var/run/tappd.sock:/var/run/tappd.sock
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ipfs:
+        condition: service_healthy
+      delong-datapipe:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  mysql_data:
+  ipfs_staging_data:
