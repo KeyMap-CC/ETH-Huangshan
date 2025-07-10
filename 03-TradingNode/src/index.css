@@ -1,0 +1,219 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TradingNodes Design System - Dark-first with light mode support */
+
+@layer base {
+  :root {
+    --background: 220 15% 8%;
+    --foreground: 220 10% 95%;
+
+    --card: 220 15% 12%;
+    --card-foreground: 220 10% 95%;
+
+    --popover: 220 15% 12%;
+    --popover-foreground: 220 10% 95%;
+
+    --primary: 270 50% 40%;
+    --primary-foreground: 220 10% 95%;
+
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 220 10% 95%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 70%;
+
+    --accent: 220 70% 50%;
+    --accent-foreground: 220 10% 95%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 220 10% 95%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 270 50% 40%;
+
+    --radius: 0.75rem;
+  }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 270 50% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 15% 25%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 220 70% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 92%;
+    --ring: 270 50% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Scrollbar styling for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+
+  /* Light theme scrollbar styling */
+  .light ::-webkit-scrollbar-track {
+    background: hsl(220 15% 95%);
+  }
+  
+  .light ::-webkit-scrollbar-thumb {
+    background: hsl(220 70% 50%);
+  }
+  
+  .light ::-webkit-scrollbar-thumb:hover {
+    background: hsl(270 50% 40%);
+  }
+}
+
+@layer components {
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(270 50% 40%) 0%, hsl(220 70% 50%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Light theme gradient text */
+  .light .gradient-text {
+    background: linear-gradient(135deg, hsl(270 60% 35%) 0%, hsl(220 70% 45%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Light theme glass effect */
+  .light .glass-effect {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(220, 220, 240, 0.4);
+  }
+
+  .node-card {
+    @apply bg-gradient-card border border-border/50 rounded-xl p-6 transition-all duration-300;
+    backdrop-filter: blur(20px);
+  }
+
+  .node-card:hover {
+    @apply border-primary/50 shadow-lg shadow-primary/20 transform translate-y-[-2px];
+  }
+
+  /* Light theme node card styling */
+  .light .node-card {
+    background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
+    border: 1px solid hsl(220 15% 88%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .light .node-card:hover {
+    border-color: hsl(270 50% 70%);
+    box-shadow: 0 8px 24px rgba(120, 80, 160, 0.15);
+  }
+
+  .btn-primary {
+    @apply bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02];
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground border border-border px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-secondary/80 hover:border-primary/50;
+  }
+
+  /* Light theme button adjustments */
+  .light .btn-secondary {
+    background: hsl(220 15% 96%);
+    border-color: hsl(220 15% 88%);
+    color: hsl(220 15% 25%);
+  }
+
+  .light .btn-secondary:hover {
+    background: hsl(220 15% 92%);
+    border-color: hsl(270 50% 70%);
+  }
+
+  /* Light theme adjustments for floating animations */
+  .light .animate-float {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  }
+
+  /* Light theme loading spinner */
+  .light .loading-spinner {
+    border-top: 4px solid hsl(270 50% 40%);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+  }
+}
+
+/* Custom animations for mouse trail effect - now handled in JavaScript */
+
+/* Loading animation */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid transparent;
+  border-top: 4px solid hsl(var(--primary));
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
