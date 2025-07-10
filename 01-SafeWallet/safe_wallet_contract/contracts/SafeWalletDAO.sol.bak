@@ -1,0 +1,224 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
+
+import "@openzeppelin/contracts/governance/Governor.sol";
+import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
+import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
+import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
+import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
+import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
+import "@openzeppelin/contracts/governance/TimelockController.sol";
+
+/**
+ * @title SafeWalletDAO
+ * @dev 基于OpenZeppelin Governor的DAO合约，用于管理SafeWalletTreasury
+ */
+contract SafeWalletDAO is
+    Governor,
+    GovernorSettings,
+    GovernorCountingSimple,
+    GovernorVotes,
+    GovernorVotesQuorumFraction,
+    GovernorTimelockControl
+{
+    // SWT代币地址
+    address public swtToken;
+    
+    // 金库地址
+    address public treasury;
+    
+    /**
+     * @dev 构造函数
+     * @param _token 投票代币地址（使用SWT代币作为投票权）
+     * @param _timelock 时间锁控制器地址
+     */
+    constructor(
+        IVotes _token,
+        TimelockController _timelock
+    )
+        Governor("SafeWalletDAO")
+        GovernorSettings(
+            1 days,    // 1天的投票延迟
+            1 weeks,   // 1周的投票期
+            0          // 提案阈值（0表示任何代币持有者都可以提案）
+        )
+        GovernorVotes(_token)
+        GovernorVotesQuorumFraction(4)  // 40%的法定人数
+        GovernorTimelockControl(_timelock)
+    {
+        swtToken = address(_token);
+    }
+
+    /**
+     * @dev 设置金库地址
+     * @param _treasury 金库合约地址
+     */
+    function setTreasury(address _treasury) external onlyGovernance {
+        require(_treasury != address(0), "Invalid treasury address");
+        treasury = _treasury;
+    }
+
+    /**
+     * @dev 更新金库的兑换比例
+     * @param _treasury 金库合约地址
+     * @param _newRequiredUsdtAmount 新的USDT数量要求
+     * @param _newRewardSwtAmount 新的SWT奖励数量
+     */
+    function updateExchangeRates(address _treasury, uint256 _newRequiredUsdtAmount, uint256 _newRewardSwtAmount) external onlyGovernance {
+        // 创建调用数据
+        bytes memory callData = abi.encodeWithSignature(
+            "updateExchangeRates(uint256,uint256)",
+            _newRequiredUsdtAmount,
+            _newRewardSwtAmount
+        );
+        
+        // 执行调用
+        (bool success, ) = _treasury.call(callData);
+        require(success, "Failed to update exchange rates");
+    }
+
+    /**
+     * @dev 暂停金库的兑换功能
+     * @param _treasury 金库合约地址
+     */
+    function pauseTreasury(address _treasury) external onlyGovernance {
+        // 创建调用数据
+        bytes memory callData = abi.encodeWithSignature("pauseExchange()");
+        
+        // 执行调用
+        (bool success, ) = _treasury.call(callData);
+        require(success, "Failed to pause exchange");
+    }
+
+    /**
+     * @dev 恢复金库的兑换功能
+     * @param _treasury 金库合约地址
+     */
+    function unpauseTreasury(address _treasury) external onlyGovernance {
+        // 创建调用数据
+        bytes memory callData = abi.encodeWithSignature("unpauseExchange()");
+        
+        // 执行调用
+        (bool success, ) = _treasury.call(callData);
+        require(success, "Failed to unpause exchange");
+    }
+
+    // 必须实现的覆盖函数
+    function votingDelay()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.votingDelay();
+    }
+
+    function votingPeriod()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.votingPeriod();
+    }
+
+    function quorum(uint256 blockNumber)
+        public
+        view
+        override(Governor, GovernorVotesQuorumFraction)
+        returns (uint256)
+    {
+        return super.quorum(blockNumber);
+    }
+
+    function state(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (ProposalState)
+    {
+        return super.state(proposalId);
+    }
+
+    function propose(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        string memory description
+    )
+        public
+        override(Governor)
+        returns (uint256)
+    {
+        return super.propose(targets, values, calldatas, description);
+    }
+
+    function proposalThreshold()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.proposalThreshold();
+    }
+    
+    function _queueOperations(
+        uint256 proposalId,
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) internal override(Governor, GovernorTimelockControl) returns (uint48) {
+        return super._queueOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function _executeOperations(
+        uint256 proposalId,
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    ) internal override(Governor, GovernorTimelockControl) {
+        super._executeOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function _cancel(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash
+    )
+        internal
+        override(Governor, GovernorTimelockControl)
+        returns (uint256)
+    {
+        return super._cancel(targets, values, calldatas, descriptionHash);
+    }
+
+    function _executor()
+        internal
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (address)
+    {
+        return super._executor();
+    }
+    
+    function proposalNeedsQueuing(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (bool)
+    {
+        return super.proposalNeedsQueuing(proposalId);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+} 
