@@ -2,8 +2,11 @@
 
 ## 项目描述
 
-Github repo : https://github.com/fuhaooo/rhythm-pose.git
-PPT: https://gamma.app/docs/Rhythm-Pose-Web3-3cujaoqj5sdx4vd
+Github repo：https://github.com/fuhaooo/rhythm-pose.git
+
+PPT：https://gamma.app/docs/Rhythm-Pose-Web3-3cujaoqj5sdx4vd
+
+Contract TX：https://testnet.soniclabs.com/address/0x122e94bf5c6ab0c6e08ccba6235af2c2fe275225
 
 Rhythm Pose 是一个基于 Web3 技术的实时动作识别和评分系统，结合了 AI 人工智能和区块链技术。该项目利用 ml5.js 和 MediaPipe 进行实时动作检测，支持多种瑜伽姿势和运动动作的识别与评估，并通过区块链技术确保评分数据的公正性和用户隐私保护。
 
@@ -27,7 +30,8 @@ Rhythm Pose 项目深度集成了以太坊生态系统的核心技术：
 - **数据不可篡改**：所有评分数据通过智能合约存储，确保公平性
 - **隐私保护**：计划集成 ZKTLS（零知识传输层安全）技术，保护用户运动数据隐私
 - **去中心化存储**：运动视频和数据可选择存储在 IPFS 上
-- **跨链兼容**：支持以太坊主网、Polygon、Arbitrum 等 EVM 兼容链
+- **跨链兼容**：支持以太坊主网、Polygon、Arbitrum、Sonic 等 EVM 兼容链
+- **当前部署**：智能合约已部署在 Sonic 测试网上，合约地址：0x122e94bf5c6ab0c6e08ccba6235af2c2fe275225
 
 ### Web3 交互
 - **钱包连接**：支持 MetaMask、WalletConnect 等主流钱包
@@ -162,15 +166,19 @@ npm run start
 
 ## 团队成员
 
-- Alfred(Github ID:fuhaooo， 职责：后端、产品) 
+- **Alfred** - GitHub ID: [@fuhaooo](https://github.com/fuhaooo)
+  - 职责：后端开发、产品设计
+  - 负责 AI 动作识别算法集成和产品功能规划
 
-- Keith(Github ID: apkaisaw，职责：前端、合约)
+- **Keith** - GitHub ID: [@apkaisaw](https://github.com/apkaisaw)
+  - 职责：前端开发、智能合约
+  - 负责用户界面设计和区块链智能合约开发
 
 ## 相关链接
 
 - **GitHub 仓库**: https://github.com/fuhaooo/rhythm-pose
 - **项目演示**: https://gamma.app/docs/Rhythm-Pose-Web3-3cujaoqj5sdx4vd
-- **智能合约地址**: （待部署）
+- **智能合约地址**: https://testnet.soniclabs.com/address/0x122e94bf5c6ab0c6e08ccba6235af2c2fe275225
 - **技术文档**: （开发中）
 
 ## 许可证
