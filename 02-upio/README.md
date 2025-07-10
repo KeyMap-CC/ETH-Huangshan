@@ -18,11 +18,19 @@ A one-stop platform that provides developers with idea validation, user feedback
 ## Technology Stack:
 
 - Backend
+  - Node.js
   - Nest.js
+  - PostgreSQL
   - viem
+
+
 - Front-end
-  - next
+  - Node.js
+  - pnpm
+  - Next.js
   - preline
+  - tailwindcss
+
 - Contract
   - Solidity
 
