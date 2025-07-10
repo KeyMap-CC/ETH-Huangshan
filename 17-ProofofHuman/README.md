@@ -12,9 +12,8 @@ https://docs.google.com/presentation/d/1Yfxr--E_Xv9AbKYgALymh0vPTUCf6Tw1l7pF_XUe
   - 前端 Swift
     - 硬件能力 App attest FaceID
   - 后端 Flask
-  - 一致性检查 CDHASH 
+  - 一致性检查 CDHASH JailBrake
   - 合约 Sol
-  - 密码学保障 Sha256 X509
 
 - 安装与运行指南：提供详细的步骤，说明如何安装、部署和运行你的项目。这对于评委测试你的项目至关重要。如果需要特定的环境配置（例如 Node.js 版本、钱包插件等），请务必注明。
   - 前端 新建Xcode项目 名为 并复制 BioCheckTest 中的文件到你的同名目录中 Build 并在模拟器或者是手机上运行，因除源码之外的文件可能会包含开发者账号实名信息 故删除
@@ -30,4 +29,4 @@ https://docs.google.com/presentation/d/1Yfxr--E_Xv9AbKYgALymh0vPTUCf6Tw1l7pF_XUe
 
 - 团队成员 (可选)： Solo。
 
-- 演示视频/截图：如果条件允许，提供一个简短的演示视频链接（例如上传到 YouTube、Bilibili 等）或项目截图会非常有帮助，让评委能直观地看到你的项目效果。
+- 演示视频/截图：https://youtu.be/bGKQZUivYO0
