@@ -1,8 +1,16 @@
 # 🤩 Consensus Launch
 
-Consensus Launch is a OmniChain Memecoin launchpad built on the concept of **FFLaunch**, featuring **Memecoin Staking** and **Memecoin DAO governance**. Compared to FFLaunch, Consensus Launch has no entry barriers. It has removed the customizable token generator interface and instead uses a universal token template to create memecoins. Users can deploy across all chains with just a few clicks via the website UI, without needing any programming knowledge.
+Consensus Launch is a OmniChain consensus launchpad, featuring **Community Token Staking** and **Community Token DAO governance**. It uses a universal token template to create Community Tokens. Users can deploy across all chains with just a few clicks via the website UI, without needing any programming knowledge.
 
-For each Memecoin, a corresponding Memecoin Yield Vault and Memecoin DAO Treasury are deployed on its governance chain. Users can stake memecoins into the yield vault to earn rewards, which come from the memecoin portion of the market-making profits of the locked genesis liquidity and other potential revenues. The UPT portion of the market-making profits from the locked genesis liquidity goes to the Memecoin DAO Treasury to support the decentralized operations of the Memecoin community. Community members participate in governance by staking memecoins to control the use of treasury revenues.
+For each Community Token, a corresponding Community Token Yield Vault and Community Token DAO Treasury are deployed on its governance chain. Users can stake Community Tokens into the yield vault to earn rewards, which come from the Community Token portion of the market-making profits of the locked genesis liquidity and other potential revenues. The UPT portion of the market-making profits from the locked genesis liquidity goes to the Community Token DAO Treasury to support the decentralized operations of the Community Token community. Community members participate in governance by staking Community Tokens to control the use of treasury revenues.
+
+For more details, please refer to the product documentation : [Outrun Official Doc](https://outrun.gitbook.io/doc "Outrun Official Doc")
+
+Test Website: https://testnet.outrun.build/
+
+Member: 
+  Contract & Product：Jason 
+  Frontend: Dawn
 
 ## Contract(EVM OmniChain)
 
@@ -30,7 +38,7 @@ For each Memecoin, a corresponding Memecoin Yield Vault and Memecoin DAO Treasur
 
 0x8FE652c1098A1D95248A87b231E7a152b8cA895a
 
-### OmnichainMemecoinStaker(BNB Testnet, Base Sepolia, Arb Sepolia)
+### OmnichainCommunity TokenStaker(BNB Testnet, Base Sepolia, Arb Sepolia)
 
 0x0fC90382BB786A74A622E9F92038C9e63B18aD6D
 
@@ -41,18 +49,18 @@ For each Memecoin, a corresponding Memecoin Yield Vault and Memecoin DAO Treasur
 
 ### Min Proxy Implementation
 
-#### MemecoinImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
+#### Community TokenImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
 
 0xcfCa0637bBFcBAd12037705FBAAb86cC9358C214
 
-#### MemecoinPOLImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
+#### Community TokenPOLImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
 
 0x54427b3DCBcFa4cD2eB3a1a2d06Cf48c70a70508
 
-#### MemecoinYieldVaultImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
+#### Community TokenYieldVaultImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
 
 0x2D81BD16b38494E3444320A493b3C60e6C8865Ff
 
-#### MemecoinDaoGovernorImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
+#### Community TokenDaoGovernorImplementation(BNB Testnet, Base Sepolia, Arb Sepolia)
 
 0x50220CBB9e55519d82823Da849F6E8E211a9bc77

@@ -1,19 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.28;
 
-import { Nonces } from "@openzeppelin/contracts/utils/Nonces.sol";
-
 import { IMemecoin } from "../token/interfaces/IMemecoin.sol";
+import { OutrunNoncesInit } from "../common/OutrunNoncesInit.sol";
 import { IOFTCompose } from "../common/layerzero/oft/IOFTCompose.sol";
 import { IMemecoinYieldVault } from "./interfaces/IMemecoinYieldVault.sol";
 import { OutrunSafeERC20 , IERC20} from "../libraries/OutrunSafeERC20.sol";
 import { OutrunERC20PermitInit } from "../common/OutrunERC20PermitInit.sol";
-import { OutrunERC20Init, OutrunERC20Votes } from "../common/governance/OutrunERC20Votes.sol";
+import { OutrunERC20Init, OutrunERC20VotesInit } from "../common/governance/OutrunERC20VotesInit.sol";
 
 /**
  * @dev Memecoin Yield Vault
  */
-contract MemecoinYieldVault is IMemecoinYieldVault, OutrunERC20PermitInit, OutrunERC20Votes {
+contract MemecoinYieldVault is IMemecoinYieldVault, OutrunERC20PermitInit, OutrunERC20VotesInit {
     using OutrunSafeERC20 for IERC20;
 
     uint256 public constant MAX_REDEEM_REQUESTS = 5;
@@ -33,7 +32,7 @@ contract MemecoinYieldVault is IMemecoinYieldVault, OutrunERC20PermitInit, Outru
         address _asset,
         uint256 _verseId
     ) external override initializer {
-        __OutrunERC20_init(_name, _symbol, 18);
+        __OutrunERC20_init(_name, _symbol);
         __OutrunERC20Permit_init(_name);
 
         yieldDispatcher = _yieldDispatcher;
@@ -189,11 +188,11 @@ contract MemecoinYieldVault is IMemecoinYieldVault, OutrunERC20PermitInit, Outru
         emit Deposit(sender, receiver, assets, shares);
     }
 
-    function _update(address from, address to, uint256 value) internal override(OutrunERC20Init, OutrunERC20Votes) {
+    function _update(address from, address to, uint256 value) internal override(OutrunERC20Init, OutrunERC20VotesInit) {
         super._update(from, to, value);
     }
 
-    function nonces(address owner) public view override(OutrunERC20PermitInit, Nonces) returns (uint256) {
+    function nonces(address owner) public view override(OutrunERC20PermitInit, OutrunNoncesInit) returns (uint256) {
         return super.nonces(owner);
     }
 }
