@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>希罕DAO - 成员</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #8b4513;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+      }
+      .header a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+        font-weight: bold;
+      }
+      .header a[href='#']:first-child {
+        text-decoration: underline;
+        text-underline-offset: 6px;
+      }
+      .header .logo {
+        display: flex;
+        align-items: center;
+      }
+      .header .logo span {
+        font-weight: bold;
+      }
+      .network {
+        display: flex;
+        align-items: center;
+      }
+      .network select {
+        margin-left: 10px;
+        padding: 5px;
+      }
+      .section {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .reviewers-list ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      .reviewers-list li:first-child {
+        background-color: #d3d3d3;
+        padding-top: 5px;
+      }
+      .reviewers-list li:nth-child(2) {
+        background-color: #ffff99;
+        padding-top: 5px;
+      }
+      .reviewers-list li {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .reviewers-list a {
+        text-decoration: none;
+        color: #007bff;
+        padding: 5px 10px;
+        background-color: #e7e7e7;
+        border-radius: 5px;
+      }
+      .view-btn {
+        margin-left: 10px;
+      }
+      .apply-btn {
+        background-color: #4a6ef6;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .apply-btn:hover {
+        background-color: #3557d0;
+      }
+      .details p {
+        margin: 5px 0;
+      }
+      .details strong {
+        color: #333;
+      }
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .details-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      .details-table td:first-child {
+        width: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">
+        <img src="heart.png" alt="Heart" style="height: 40px" /> &nbsp;&nbsp;
+        <span>希罕DAO</span>
+      </div>
+      <div style="flex-grow: 1; text-align: center">
+        <a href="#">成员</a> | <a href="#">赞助者</a> | <a href="#">审核员</a>
+      </div>
+      <div class="network">
+        <span>Holesky</span>
+        <select>
+          <option value="0x...J7tc">0x...0981</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section reviewers-list">
+      <h2>成员名单</h2>
+      <ul>
+        <li>
+          &nbsp;&nbsp;ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;钱包地址
+        </li>
+        <li>
+          &nbsp; 1.&nbsp;&nbsp;&nbsp;&nbsp;Yolanda的父亲&nbsp;&nbsp;&nbsp;&nbsp;
+          0x4f669e9b3cD8F7f12c6084B8fD47cE2370981&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看提案</a>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          &nbsp;
+          2.&nbsp;&nbsp;&nbsp;&nbsp;陈志强&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          0x1f01m3no4pP0F9l27o9084B8fD47cE2370986&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看提案</a>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          &nbsp;
+          3.&nbsp;&nbsp;&nbsp;&nbsp;王芳的哥哥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          0x5c67h9jk0mL8F7j25m9084B8fD47cE2370984&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看提案</a>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          &nbsp;
+          4.&nbsp;&nbsp;&nbsp;&nbsp;赵丽茜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          0x3e89k1lm2nN9F8k26n9084B8fD47cE2370985&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          &nbsp;
+          5.&nbsp;&nbsp;&nbsp;&nbsp;刘冬梅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          0x8d23o5pq6rQ1F0m28p9084B8fD47cE2370987&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          &nbsp;
+          6.&nbsp;&nbsp;&nbsp;&nbsp;张伟的母亲&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          0x9b34f5gh8jD7F6i24l9084B8fD47cE2370983&nbsp;&nbsp;&nbsp;&nbsp;
+          <div>
+            <a href="#" class="view-btn">查看提案</a>
+            <a href="#" class="view-btn">查看详情</a>
+          </div>
+        </li>
+        <li>
+          <div></div>
+        </li>
+        <li>
+          <div></div>
+        </li>
+        <li>
+          <div>
+            <button class="apply-btn">发起新提案</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
