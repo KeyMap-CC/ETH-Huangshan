@@ -4,7 +4,6 @@ pragma solidity ^0.8.28;
 import { Strings } from '@openzeppelin/contracts/utils/Strings.sol';
 
 contract DaoContract {
-  // Struct definitions
   struct Member {
     string name;
     string info;
@@ -31,12 +30,14 @@ contract DaoContract {
 
   struct Proposal {
     ProposalType proposalType;
+    string title;
     address proposer;
     address target;
     ProposalType targetProposalType;
     uint256 amount;
-    string name;
     string info;
+    uint256 reviewerCount;
+    uint256 threshold;
     uint256 forCount;
     uint256 againstCount;
     ProposalStatus status;
@@ -74,7 +75,6 @@ contract DaoContract {
     Distrusted
   }
 
-  // State variables
   mapping(address => Member) public members;
   mapping(address => Reviewer) public reviewers;
   mapping(address => Sponsor) public sponsors;
@@ -94,7 +94,6 @@ contract DaoContract {
   mapping(ProposalType => uint256) public approvalThresholds;
   uint256 public reviewerCount;
 
-  // Events
   event MemberApplied(
     uint256 proposalId,
     address indexed applicant,
@@ -160,7 +159,6 @@ contract DaoContract {
     address indexed proposer
   );
 
-  // Modifiers
   modifier onlyMember() {
     require(
       members[msg.sender].status == RoleStatus.Active,
@@ -186,7 +184,6 @@ contract DaoContract {
   }
 
   constructor() {
-    // Initialize approval thresholds: NewReviewer=100, UpdateThreshold=100, others=80
     approvalThresholds[ProposalType.NewMember] = 80;
     approvalThresholds[ProposalType.NewReviewer] = 100;
     approvalThresholds[ProposalType.MemberDistrust] = 80;
@@ -196,7 +193,6 @@ contract DaoContract {
     approvalThresholds[ProposalType.DelegatedFunding] = 80;
     approvalThresholds[ProposalType.UpdateThreshold] = 100;
 
-    // Make contract creator the first reviewer
     reviewers[msg.sender].name = 'Contract Creator';
     reviewers[msg.sender].info = 'Contract Creator';
     reviewers[msg.sender].status = RoleStatus.Active;
@@ -204,7 +200,6 @@ contract DaoContract {
     reviewerCount = 1;
   }
 
-  // Public view functions
   function getMembers(
     RoleStatus _status
   )
@@ -333,7 +328,6 @@ contract DaoContract {
     return (addresses, names, infos, exitNotes);
   }
 
-  // View function to get member details
   function getMemberDetails(
     address _member
   )
@@ -350,7 +344,6 @@ contract DaoContract {
     return (member.name, member.info, member.status, member.exitNote);
   }
 
-  // View function to get sponsor details
   function getSponsorDetails(
     address _sponsor
   )
@@ -378,7 +371,6 @@ contract DaoContract {
     );
   }
 
-  // View function to get reviewer details
   function getReviewerDetails(
     address _reviewer
   )
@@ -403,12 +395,14 @@ contract DaoContract {
     view
     returns (
       uint256[] memory proposalIds,
+      string[] memory titles,
       address[] memory proposers,
       address[] memory targets,
       ProposalType[] memory targetProposalTypes,
       uint256[] memory amounts,
-      string[] memory names,
       string[] memory infos,
+      uint256[] memory reviewerCounts,
+      uint256[] memory thresholds,
       uint256[] memory forCounts,
       uint256[] memory againstCounts,
       ProposalStatus[] memory statuses
@@ -425,12 +419,14 @@ contract DaoContract {
     }
 
     proposalIds = new uint256[](count);
+    titles = new string[](count);
     proposers = new address[](count);
     targets = new address[](count);
     targetProposalTypes = new ProposalType[](count);
     amounts = new uint256[](count);
-    names = new string[](count);
     infos = new string[](count);
+    reviewerCounts = new uint256[](count);
+    thresholds = new uint256[](count);
     forCounts = new uint256[](count);
     againstCounts = new uint256[](count);
     statuses = new ProposalStatus[](count);
@@ -442,12 +438,14 @@ contract DaoContract {
         proposals[i].status == _status
       ) {
         proposalIds[index] = i;
+        titles[index] = proposals[i].title;
         proposers[index] = proposals[i].proposer;
         targets[index] = proposals[i].target;
         targetProposalTypes[index] = proposals[i].targetProposalType;
         amounts[index] = proposals[i].amount;
-        names[index] = proposals[i].name;
         infos[index] = proposals[i].info;
+        reviewerCounts[index] = proposals[i].reviewerCount;
+        thresholds[index] = proposals[i].threshold;
         forCounts[index] = proposals[i].forCount;
         againstCounts[index] = proposals[i].againstCount;
         statuses[index] = proposals[i].status;
@@ -456,12 +454,173 @@ contract DaoContract {
     }
     return (
       proposalIds,
+      titles,
       proposers,
       targets,
       targetProposalTypes,
       amounts,
-      names,
       infos,
+      reviewerCounts,
+      thresholds,
+      forCounts,
+      againstCounts,
+      statuses
+    );
+  }
+
+  function getNotVotedPendingProposals(
+    address _reviewer
+  )
+    public
+    view
+    returns (
+      uint256[] memory proposalIds,
+      string[] memory titles,
+      address[] memory proposers,
+      address[] memory targets,
+      ProposalType[] memory targetProposalTypes,
+      uint256[] memory amounts,
+      string[] memory infos,
+      uint256[] memory reviewerCounts,
+      uint256[] memory thresholds,
+      uint256[] memory forCounts,
+      uint256[] memory againstCounts,
+      ProposalStatus[] memory statuses
+    )
+  {
+    require(
+      reviewers[_reviewer].status == RoleStatus.Active,
+      'Not an active reviewer'
+    );
+
+    uint256 count = 0;
+    for (uint256 i = 1; i <= proposalCount; i++) {
+      if (
+        proposals[i].status == ProposalStatus.Pending &&
+        !proposals[i].isVoted[_reviewer]
+      ) {
+        count++;
+      }
+    }
+
+    proposalIds = new uint256[](count);
+    titles = new string[](count);
+    proposers = new address[](count);
+    targets = new address[](count);
+    targetProposalTypes = new ProposalType[](count);
+    amounts = new uint256[](count);
+    infos = new string[](count);
+    reviewerCounts = new uint256[](count);
+    thresholds = new uint256[](count);
+    forCounts = new uint256[](count);
+    againstCounts = new uint256[](count);
+    statuses = new ProposalStatus[](count);
+
+    uint256 index = 0;
+    for (uint256 i = 1; i <= proposalCount; i++) {
+      if (
+        proposals[i].status == ProposalStatus.Pending &&
+        !proposals[i].isVoted[_reviewer]
+      ) {
+        proposalIds[index] = i;
+        titles[index] = proposals[i].title;
+        proposers[index] = proposals[i].proposer;
+        targets[index] = proposals[i].target;
+        targetProposalTypes[index] = proposals[i].targetProposalType;
+        amounts[index] = proposals[i].amount;
+        infos[index] = proposals[i].info;
+        reviewerCounts[index] = proposals[i].reviewerCount;
+        thresholds[index] = proposals[i].threshold;
+        forCounts[index] = proposals[i].forCount;
+        againstCounts[index] = proposals[i].againstCount;
+        statuses[index] = proposals[i].status;
+        index++;
+      }
+    }
+    return (
+      proposalIds,
+      titles,
+      proposers,
+      targets,
+      targetProposalTypes,
+      amounts,
+      infos,
+      reviewerCounts,
+      thresholds,
+      forCounts,
+      againstCounts,
+      statuses
+    );
+  }
+
+  function getProposalsByProposer(
+    address _proposer
+  )
+    public
+    view
+    returns (
+      uint256[] memory proposalIds,
+      string[] memory titles,
+      address[] memory proposers,
+      address[] memory targets,
+      ProposalType[] memory targetProposalTypes,
+      uint256[] memory amounts,
+      string[] memory infos,
+      uint256[] memory reviewerCounts,
+      uint256[] memory thresholds,
+      uint256[] memory forCounts,
+      uint256[] memory againstCounts,
+      ProposalStatus[] memory statuses
+    )
+  {
+    uint256 count = 0;
+    for (uint256 i = 1; i <= proposalCount; i++) {
+      if (proposals[i].proposer == _proposer) {
+        count++;
+      }
+    }
+
+    proposalIds = new uint256[](count);
+    titles = new string[](count);
+    proposers = new address[](count);
+    targets = new address[](count);
+    targetProposalTypes = new ProposalType[](count);
+    amounts = new uint256[](count);
+    infos = new string[](count);
+    reviewerCounts = new uint256[](count);
+    thresholds = new uint256[](count);
+    forCounts = new uint256[](count);
+    againstCounts = new uint256[](count);
+    statuses = new ProposalStatus[](count);
+
+    uint256 index = 0;
+    for (uint256 i = 1; i <= proposalCount; i++) {
+      if (proposals[i].proposer == _proposer) {
+        proposalIds[index] = i;
+        titles[index] = proposals[i].title;
+        proposers[index] = proposals[i].proposer;
+        targets[index] = proposals[i].target;
+        targetProposalTypes[index] = proposals[i].targetProposalType;
+        amounts[index] = proposals[i].amount;
+        infos[index] = proposals[i].info;
+        reviewerCounts[index] = proposals[i].reviewerCount;
+        thresholds[index] = proposals[i].threshold;
+        forCounts[index] = proposals[i].forCount;
+        againstCounts[index] = proposals[i].againstCount;
+        statuses[index] = proposals[i].status;
+        index++;
+      }
+    }
+    return (
+      proposalIds,
+      titles,
+      proposers,
+      targets,
+      targetProposalTypes,
+      amounts,
+      infos,
+      reviewerCounts,
+      thresholds,
       forCounts,
       againstCounts,
       statuses
@@ -493,7 +652,6 @@ contract DaoContract {
     return (voters, isApproved, reasons);
   }
 
-  // Application functions
   function applyForMember(string memory _name, string memory _info) public {
     require(
       members[msg.sender].status != RoleStatus.Pending,
@@ -511,8 +669,11 @@ contract DaoContract {
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.NewMember;
     proposals[proposalCount].proposer = msg.sender;
-    proposals[proposalCount].name = _name;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.NewMember
+    ];
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit MemberApplied(proposalCount, msg.sender, _name, _info);
   }
@@ -534,8 +695,11 @@ contract DaoContract {
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.NewReviewer;
     proposals[proposalCount].proposer = msg.sender;
-    proposals[proposalCount].name = _name;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.NewReviewer
+    ];
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit ReviewerApplied(proposalCount, msg.sender, _name, _info);
   }
@@ -577,7 +741,6 @@ contract DaoContract {
     emit SponsorRegistered(msg.sender, _name, _info, _delegate, msg.value);
   }
 
-  // Member functions
   function updateMemberInfo(
     string memory _name,
     string memory _info
@@ -595,20 +758,25 @@ contract DaoContract {
   }
 
   function proposeFunding(
+    string memory _title,
     uint256 _amount,
     string memory _info
   ) public onlyMember {
     require(_amount <= remainingBalance, 'Insufficient delegated funds');
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.Funding;
+    proposals[proposalCount].title = _title;
     proposals[proposalCount].proposer = msg.sender;
     proposals[proposalCount].amount = _amount;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.Funding
+    ];
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit FundingProposed(proposalCount, msg.sender, _amount);
   }
 
-  // Sponsor functions
   function updateSponsorInfo(
     string memory _name,
     string memory _info
@@ -633,6 +801,7 @@ contract DaoContract {
   }
 
   function proposeDirectFunding(
+    string memory _title,
     address _recipient,
     uint256 _amount,
     string memory _info
@@ -649,10 +818,15 @@ contract DaoContract {
 
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.DirectFunding;
+    proposals[proposalCount].title = _title;
     proposals[proposalCount].proposer = msg.sender;
     proposals[proposalCount].target = _recipient;
     proposals[proposalCount].amount = _amount;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.DirectFunding
+    ];
     proposals[proposalCount].status = ProposalStatus.Approved;
 
     sponsors[msg.sender].availableBalance -= _amount;
@@ -665,7 +839,6 @@ contract DaoContract {
     );
   }
 
-  // Reviewer functions
   function updateReviewerInfo(
     string memory _name,
     string memory _info
@@ -685,6 +858,7 @@ contract DaoContract {
 
   function proposeDistrust(
     ProposalType _type,
+    string memory _title,
     address _target,
     string memory _info
   ) public onlyReviewer {
@@ -706,15 +880,19 @@ contract DaoContract {
 
     proposalCount++;
     proposals[proposalCount].proposalType = _type;
+    proposals[proposalCount].title = _title;
     proposals[proposalCount].proposer = msg.sender;
     proposals[proposalCount].target = _target;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[_type];
     proposals[proposalCount].forCount++;
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit DistrustProposed(proposalCount, _type, msg.sender, _target);
   }
 
   function proposeDelegatedFunding(
+    string memory _title,
     address _recipient,
     uint256 _amount,
     string memory _info
@@ -726,10 +904,15 @@ contract DaoContract {
     require(_amount <= remainingBalance, 'Insufficient delegated funds');
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.DelegatedFunding;
+    proposals[proposalCount].title = _title;
     proposals[proposalCount].proposer = msg.sender;
     proposals[proposalCount].target = _recipient;
     proposals[proposalCount].amount = _amount;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.DelegatedFunding
+    ];
     proposals[proposalCount].forCount++;
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit DelegatedFundingProposed(
@@ -742,6 +925,7 @@ contract DaoContract {
 
   function proposeThresholdUpdate(
     ProposalType _type,
+    string memory _title,
     uint256 _newThreshold,
     string memory _info
   ) public onlyReviewer {
@@ -752,10 +936,15 @@ contract DaoContract {
     );
     proposalCount++;
     proposals[proposalCount].proposalType = ProposalType.UpdateThreshold;
+    proposals[proposalCount].title = _title;
     proposals[proposalCount].proposer = msg.sender;
     proposals[proposalCount].targetProposalType = _type;
     proposals[proposalCount].amount = _newThreshold;
     proposals[proposalCount].info = _info;
+    proposals[proposalCount].reviewerCount = reviewerCount;
+    proposals[proposalCount].threshold = approvalThresholds[
+      ProposalType.UpdateThreshold
+    ];
     proposals[proposalCount].forCount++;
     proposals[proposalCount].status = ProposalStatus.Pending;
     emit ThresholdUpdateProposed(
@@ -766,7 +955,6 @@ contract DaoContract {
     );
   }
 
-  // Voting and execution
   function voteProposal(
     uint256 _proposalId,
     bool _isApproved,
@@ -811,13 +999,12 @@ contract DaoContract {
     emit ProposalVoted(_proposalId, msg.sender, _isApproved, _reason);
 
     if (
-      (proposal.forCount * 100) / reviewerCount >=
-      approvalThresholds[proposal.proposalType]
+      (proposal.forCount * 100) / proposal.reviewerCount >= proposal.threshold
     ) {
       executeProposal(_proposalId);
     } else if (
-      (proposal.againstCount * 100) / reviewerCount >
-      100 - approvalThresholds[proposal.proposalType]
+      (proposal.againstCount * 100) / proposal.reviewerCount >
+      100 - proposal.threshold
     ) {
       proposal.status = ProposalStatus.Rejected;
     }
@@ -829,12 +1016,16 @@ contract DaoContract {
     proposal.status = ProposalStatus.Approved;
 
     if (proposal.proposalType == ProposalType.NewMember) {
-      members[proposal.proposer].name = proposal.name;
+      members[proposal.proposer].name = string(
+        abi.encodePacked('Member ', Strings.toString(_proposalId))
+      );
       members[proposal.proposer].info = proposal.info;
       members[proposal.proposer].status = RoleStatus.Active;
       memberList.push(proposal.proposer);
     } else if (proposal.proposalType == ProposalType.NewReviewer) {
-      reviewers[proposal.proposer].name = proposal.name;
+      reviewers[proposal.proposer].name = string(
+        abi.encodePacked('Reviewer ', Strings.toString(_proposalId))
+      );
       reviewers[proposal.proposer].info = proposal.info;
       reviewers[proposal.proposer].status = RoleStatus.Active;
       reviewerList.push(proposal.proposer);
@@ -863,9 +1054,9 @@ contract DaoContract {
     } else if (proposal.proposalType == ProposalType.Funding) {
       remainingBalance -= proposal.amount;
       payable(proposal.proposer).transfer(proposal.amount);
-    } else if (proposal.proposalType == ProposalType.DirectFunding) {
-      // DirectFunding proposals are executed immediately in proposeDirectFunding
-    } else if (proposal.proposalType == ProposalType.DelegatedFunding) {
+    } else if (proposal.proposalType == ProposalType.DirectFunding) {} else if (
+      proposal.proposalType == ProposalType.DelegatedFunding
+    ) {
       remainingBalance -= proposal.amount;
       payable(proposal.target).transfer(proposal.amount);
     } else if (proposal.proposalType == ProposalType.UpdateThreshold) {
@@ -879,6 +1070,5 @@ contract DaoContract {
     );
   }
 
-  // Receive function for direct ETH transfers
   receive() external payable {}
 }

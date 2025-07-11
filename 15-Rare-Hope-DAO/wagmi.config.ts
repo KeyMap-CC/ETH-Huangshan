@@ -8,7 +8,7 @@ export default defineConfig({
     foundry({
       deployments: {
         DaoContract: {
-          [chains.holesky.id]: '0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB',
+          [chains.holesky.id]: '0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b',
         },
       },
       project: './contracts',

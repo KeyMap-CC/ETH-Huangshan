@@ -10,7 +10,7 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const daoContractAbi = [
   { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
@@ -116,6 +116,34 @@ export const daoContractAbi = [
   },
   {
     type: 'function',
+    inputs: [{ name: '_reviewer', internalType: 'address', type: 'address' }],
+    name: 'getNotVotedPendingProposals',
+    outputs: [
+      { name: 'proposalIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'titles', internalType: 'string[]', type: 'string[]' },
+      { name: 'proposers', internalType: 'address[]', type: 'address[]' },
+      { name: 'targets', internalType: 'address[]', type: 'address[]' },
+      {
+        name: 'targetProposalTypes',
+        internalType: 'enum DaoContract.ProposalType[]',
+        type: 'uint8[]',
+      },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'infos', internalType: 'string[]', type: 'string[]' },
+      { name: 'reviewerCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'thresholds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'forCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'againstCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      {
+        name: 'statuses',
+        internalType: 'enum DaoContract.ProposalStatus[]',
+        type: 'uint8[]',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       {
         name: '_proposalType',
@@ -131,6 +159,7 @@ export const daoContractAbi = [
     name: 'getProposals',
     outputs: [
       { name: 'proposalIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'titles', internalType: 'string[]', type: 'string[]' },
       { name: 'proposers', internalType: 'address[]', type: 'address[]' },
       { name: 'targets', internalType: 'address[]', type: 'address[]' },
       {
@@ -139,8 +168,37 @@ export const daoContractAbi = [
         type: 'uint8[]',
       },
       { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'names', internalType: 'string[]', type: 'string[]' },
       { name: 'infos', internalType: 'string[]', type: 'string[]' },
+      { name: 'reviewerCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'thresholds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'forCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'againstCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      {
+        name: 'statuses',
+        internalType: 'enum DaoContract.ProposalStatus[]',
+        type: 'uint8[]',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_proposer', internalType: 'address', type: 'address' }],
+    name: 'getProposalsByProposer',
+    outputs: [
+      { name: 'proposalIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'titles', internalType: 'string[]', type: 'string[]' },
+      { name: 'proposers', internalType: 'address[]', type: 'address[]' },
+      { name: 'targets', internalType: 'address[]', type: 'address[]' },
+      {
+        name: 'targetProposalTypes',
+        internalType: 'enum DaoContract.ProposalType[]',
+        type: 'uint8[]',
+      },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'infos', internalType: 'string[]', type: 'string[]' },
+      { name: 'reviewerCounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'thresholds', internalType: 'uint256[]', type: 'uint256[]' },
       { name: 'forCounts', internalType: 'uint256[]', type: 'uint256[]' },
       { name: 'againstCounts', internalType: 'uint256[]', type: 'uint256[]' },
       {
@@ -276,6 +334,7 @@ export const daoContractAbi = [
         internalType: 'enum DaoContract.ProposalType',
         type: 'uint8',
       },
+      { name: 'title', internalType: 'string', type: 'string' },
       { name: 'proposer', internalType: 'address', type: 'address' },
       { name: 'target', internalType: 'address', type: 'address' },
       {
@@ -284,8 +343,9 @@ export const daoContractAbi = [
         type: 'uint8',
       },
       { name: 'amount', internalType: 'uint256', type: 'uint256' },
-      { name: 'name', internalType: 'string', type: 'string' },
       { name: 'info', internalType: 'string', type: 'string' },
+      { name: 'reviewerCount', internalType: 'uint256', type: 'uint256' },
+      { name: 'threshold', internalType: 'uint256', type: 'uint256' },
       { name: 'forCount', internalType: 'uint256', type: 'uint256' },
       { name: 'againstCount', internalType: 'uint256', type: 'uint256' },
       {
@@ -299,6 +359,7 @@ export const daoContractAbi = [
   {
     type: 'function',
     inputs: [
+      { name: '_title', internalType: 'string', type: 'string' },
       { name: '_recipient', internalType: 'address', type: 'address' },
       { name: '_amount', internalType: 'uint256', type: 'uint256' },
       { name: '_info', internalType: 'string', type: 'string' },
@@ -310,6 +371,7 @@ export const daoContractAbi = [
   {
     type: 'function',
     inputs: [
+      { name: '_title', internalType: 'string', type: 'string' },
       { name: '_recipient', internalType: 'address', type: 'address' },
       { name: '_amount', internalType: 'uint256', type: 'uint256' },
       { name: '_info', internalType: 'string', type: 'string' },
@@ -326,6 +388,7 @@ export const daoContractAbi = [
         internalType: 'enum DaoContract.ProposalType',
         type: 'uint8',
       },
+      { name: '_title', internalType: 'string', type: 'string' },
       { name: '_target', internalType: 'address', type: 'address' },
       { name: '_info', internalType: 'string', type: 'string' },
     ],
@@ -336,6 +399,7 @@ export const daoContractAbi = [
   {
     type: 'function',
     inputs: [
+      { name: '_title', internalType: 'string', type: 'string' },
       { name: '_amount', internalType: 'uint256', type: 'uint256' },
       { name: '_info', internalType: 'string', type: 'string' },
     ],
@@ -351,6 +415,7 @@ export const daoContractAbi = [
         internalType: 'enum DaoContract.ProposalType',
         type: 'uint8',
       },
+      { name: '_title', internalType: 'string', type: 'string' },
       { name: '_newThreshold', internalType: 'uint256', type: 'uint256' },
       { name: '_info', internalType: 'string', type: 'string' },
     ],
@@ -843,14 +908,14 @@ export const daoContractAbi = [
 ] as const
 
 /**
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const daoContractAddress = {
-  17000: '0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB',
+  17000: '0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b',
 } as const
 
 /**
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const daoContractConfig = {
   address: daoContractAddress,
@@ -864,7 +929,7 @@ export const daoContractConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContract = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -874,7 +939,7 @@ export const useReadDaoContract = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"approvalThresholds"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractApprovalThresholds =
   /*#__PURE__*/ createUseReadContract({
@@ -886,7 +951,7 @@ export const useReadDaoContractApprovalThresholds =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getMemberDetails"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetMemberDetails =
   /*#__PURE__*/ createUseReadContract({
@@ -898,7 +963,7 @@ export const useReadDaoContractGetMemberDetails =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getMembers"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetMembers = /*#__PURE__*/ createUseReadContract(
   {
@@ -909,9 +974,21 @@ export const useReadDaoContractGetMembers = /*#__PURE__*/ createUseReadContract(
 )
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getNotVotedPendingProposals"`
+ *
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
+ */
+export const useReadDaoContractGetNotVotedPendingProposals =
+  /*#__PURE__*/ createUseReadContract({
+    abi: daoContractAbi,
+    address: daoContractAddress,
+    functionName: 'getNotVotedPendingProposals',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getProposals"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetProposals =
   /*#__PURE__*/ createUseReadContract({
@@ -921,9 +998,21 @@ export const useReadDaoContractGetProposals =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getProposalsByProposer"`
+ *
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
+ */
+export const useReadDaoContractGetProposalsByProposer =
+  /*#__PURE__*/ createUseReadContract({
+    abi: daoContractAbi,
+    address: daoContractAddress,
+    functionName: 'getProposalsByProposer',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getReviewerDetails"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetReviewerDetails =
   /*#__PURE__*/ createUseReadContract({
@@ -935,7 +1024,7 @@ export const useReadDaoContractGetReviewerDetails =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getReviewers"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetReviewers =
   /*#__PURE__*/ createUseReadContract({
@@ -947,7 +1036,7 @@ export const useReadDaoContractGetReviewers =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getSponsorDetails"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetSponsorDetails =
   /*#__PURE__*/ createUseReadContract({
@@ -959,7 +1048,7 @@ export const useReadDaoContractGetSponsorDetails =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getSponsors"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetSponsors =
   /*#__PURE__*/ createUseReadContract({
@@ -971,7 +1060,7 @@ export const useReadDaoContractGetSponsors =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"getVoters"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractGetVoters = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -982,7 +1071,7 @@ export const useReadDaoContractGetVoters = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"memberList"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractMemberList = /*#__PURE__*/ createUseReadContract(
   {
@@ -995,7 +1084,7 @@ export const useReadDaoContractMemberList = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"members"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractMembers = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -1006,7 +1095,7 @@ export const useReadDaoContractMembers = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposalCount"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractProposalCount =
   /*#__PURE__*/ createUseReadContract({
@@ -1018,7 +1107,7 @@ export const useReadDaoContractProposalCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposals"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractProposals = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -1029,7 +1118,7 @@ export const useReadDaoContractProposals = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"remainingBalance"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractRemainingBalance =
   /*#__PURE__*/ createUseReadContract({
@@ -1041,7 +1130,7 @@ export const useReadDaoContractRemainingBalance =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"reviewerCount"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractReviewerCount =
   /*#__PURE__*/ createUseReadContract({
@@ -1053,7 +1142,7 @@ export const useReadDaoContractReviewerCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"reviewerList"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractReviewerList =
   /*#__PURE__*/ createUseReadContract({
@@ -1065,7 +1154,7 @@ export const useReadDaoContractReviewerList =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"reviewers"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractReviewers = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -1076,7 +1165,7 @@ export const useReadDaoContractReviewers = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"sponsorList"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractSponsorList =
   /*#__PURE__*/ createUseReadContract({
@@ -1088,7 +1177,7 @@ export const useReadDaoContractSponsorList =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"sponsors"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractSponsors = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -1099,7 +1188,7 @@ export const useReadDaoContractSponsors = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"totalDelegatedAmount"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractTotalDelegatedAmount =
   /*#__PURE__*/ createUseReadContract({
@@ -1111,7 +1200,7 @@ export const useReadDaoContractTotalDelegatedAmount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"totalFundsReceived"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractTotalFundsReceived =
   /*#__PURE__*/ createUseReadContract({
@@ -1123,7 +1212,7 @@ export const useReadDaoContractTotalFundsReceived =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"voterList"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useReadDaoContractVoterList = /*#__PURE__*/ createUseReadContract({
   abi: daoContractAbi,
@@ -1134,7 +1223,7 @@ export const useReadDaoContractVoterList = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContract = /*#__PURE__*/ createUseWriteContract({
   abi: daoContractAbi,
@@ -1144,7 +1233,7 @@ export const useWriteDaoContract = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"addSponsorFunds"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractAddSponsorFunds =
   /*#__PURE__*/ createUseWriteContract({
@@ -1156,7 +1245,7 @@ export const useWriteDaoContractAddSponsorFunds =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"applyForMember"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractApplyForMember =
   /*#__PURE__*/ createUseWriteContract({
@@ -1168,7 +1257,7 @@ export const useWriteDaoContractApplyForMember =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"applyForReviewer"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractApplyForReviewer =
   /*#__PURE__*/ createUseWriteContract({
@@ -1180,7 +1269,7 @@ export const useWriteDaoContractApplyForReviewer =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"becomeSponsor"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractBecomeSponsor =
   /*#__PURE__*/ createUseWriteContract({
@@ -1192,7 +1281,7 @@ export const useWriteDaoContractBecomeSponsor =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"exitMember"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractExitMember =
   /*#__PURE__*/ createUseWriteContract({
@@ -1204,7 +1293,7 @@ export const useWriteDaoContractExitMember =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"exitReviewer"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractExitReviewer =
   /*#__PURE__*/ createUseWriteContract({
@@ -1216,7 +1305,7 @@ export const useWriteDaoContractExitReviewer =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDelegatedFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractProposeDelegatedFunding =
   /*#__PURE__*/ createUseWriteContract({
@@ -1228,7 +1317,7 @@ export const useWriteDaoContractProposeDelegatedFunding =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDirectFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractProposeDirectFunding =
   /*#__PURE__*/ createUseWriteContract({
@@ -1240,7 +1329,7 @@ export const useWriteDaoContractProposeDirectFunding =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDistrust"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractProposeDistrust =
   /*#__PURE__*/ createUseWriteContract({
@@ -1252,7 +1341,7 @@ export const useWriteDaoContractProposeDistrust =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractProposeFunding =
   /*#__PURE__*/ createUseWriteContract({
@@ -1264,7 +1353,7 @@ export const useWriteDaoContractProposeFunding =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeThresholdUpdate"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractProposeThresholdUpdate =
   /*#__PURE__*/ createUseWriteContract({
@@ -1276,7 +1365,7 @@ export const useWriteDaoContractProposeThresholdUpdate =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateMemberInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractUpdateMemberInfo =
   /*#__PURE__*/ createUseWriteContract({
@@ -1288,7 +1377,7 @@ export const useWriteDaoContractUpdateMemberInfo =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateReviewerInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractUpdateReviewerInfo =
   /*#__PURE__*/ createUseWriteContract({
@@ -1300,7 +1389,7 @@ export const useWriteDaoContractUpdateReviewerInfo =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateSponsorInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractUpdateSponsorInfo =
   /*#__PURE__*/ createUseWriteContract({
@@ -1312,7 +1401,7 @@ export const useWriteDaoContractUpdateSponsorInfo =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"voteProposal"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWriteDaoContractVoteProposal =
   /*#__PURE__*/ createUseWriteContract({
@@ -1324,7 +1413,7 @@ export const useWriteDaoContractVoteProposal =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContract = /*#__PURE__*/ createUseSimulateContract({
   abi: daoContractAbi,
@@ -1334,7 +1423,7 @@ export const useSimulateDaoContract = /*#__PURE__*/ createUseSimulateContract({
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"addSponsorFunds"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractAddSponsorFunds =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1346,7 +1435,7 @@ export const useSimulateDaoContractAddSponsorFunds =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"applyForMember"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractApplyForMember =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1358,7 +1447,7 @@ export const useSimulateDaoContractApplyForMember =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"applyForReviewer"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractApplyForReviewer =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1370,7 +1459,7 @@ export const useSimulateDaoContractApplyForReviewer =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"becomeSponsor"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractBecomeSponsor =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1382,7 +1471,7 @@ export const useSimulateDaoContractBecomeSponsor =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"exitMember"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractExitMember =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1394,7 +1483,7 @@ export const useSimulateDaoContractExitMember =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"exitReviewer"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractExitReviewer =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1406,7 +1495,7 @@ export const useSimulateDaoContractExitReviewer =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDelegatedFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractProposeDelegatedFunding =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1418,7 +1507,7 @@ export const useSimulateDaoContractProposeDelegatedFunding =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDirectFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractProposeDirectFunding =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1430,7 +1519,7 @@ export const useSimulateDaoContractProposeDirectFunding =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeDistrust"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractProposeDistrust =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1442,7 +1531,7 @@ export const useSimulateDaoContractProposeDistrust =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeFunding"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractProposeFunding =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1454,7 +1543,7 @@ export const useSimulateDaoContractProposeFunding =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"proposeThresholdUpdate"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractProposeThresholdUpdate =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1466,7 +1555,7 @@ export const useSimulateDaoContractProposeThresholdUpdate =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateMemberInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractUpdateMemberInfo =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1478,7 +1567,7 @@ export const useSimulateDaoContractUpdateMemberInfo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateReviewerInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractUpdateReviewerInfo =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1490,7 +1579,7 @@ export const useSimulateDaoContractUpdateReviewerInfo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"updateSponsorInfo"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractUpdateSponsorInfo =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1502,7 +1591,7 @@ export const useSimulateDaoContractUpdateSponsorInfo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link daoContractAbi}__ and `functionName` set to `"voteProposal"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useSimulateDaoContractVoteProposal =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1514,7 +1603,7 @@ export const useSimulateDaoContractVoteProposal =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1525,7 +1614,7 @@ export const useWatchDaoContractEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"DelegatedFundingProposed"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractDelegatedFundingProposedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1537,7 +1626,7 @@ export const useWatchDaoContractDelegatedFundingProposedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"DirectFundingProposedAndExecuted"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractDirectFundingProposedAndExecutedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1549,7 +1638,7 @@ export const useWatchDaoContractDirectFundingProposedAndExecutedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"DistrustProposed"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractDistrustProposedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1561,7 +1650,7 @@ export const useWatchDaoContractDistrustProposedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"FundingProposed"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractFundingProposedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1573,7 +1662,7 @@ export const useWatchDaoContractFundingProposedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"MemberApplied"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractMemberAppliedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1585,7 +1674,7 @@ export const useWatchDaoContractMemberAppliedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"MemberExited"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractMemberExitedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1597,7 +1686,7 @@ export const useWatchDaoContractMemberExitedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"MemberInfoUpdated"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractMemberInfoUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1609,7 +1698,7 @@ export const useWatchDaoContractMemberInfoUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ProposalExecuted"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractProposalExecutedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1621,7 +1710,7 @@ export const useWatchDaoContractProposalExecutedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ProposalVoted"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractProposalVotedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1633,7 +1722,7 @@ export const useWatchDaoContractProposalVotedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ReviewerApplied"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractReviewerAppliedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1645,7 +1734,7 @@ export const useWatchDaoContractReviewerAppliedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ReviewerExited"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractReviewerExitedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1657,7 +1746,7 @@ export const useWatchDaoContractReviewerExitedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ReviewerInfoUpdated"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractReviewerInfoUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1669,7 +1758,7 @@ export const useWatchDaoContractReviewerInfoUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"SponsorInfoUpdated"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractSponsorInfoUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1681,7 +1770,7 @@ export const useWatchDaoContractSponsorInfoUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"SponsorRegistered"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractSponsorRegisteredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1693,7 +1782,7 @@ export const useWatchDaoContractSponsorRegisteredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link daoContractAbi}__ and `eventName` set to `"ThresholdUpdateProposed"`
  *
- * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB)
+ * [__View Contract on Holesky Etherscan__](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b)
  */
 export const useWatchDaoContractThresholdUpdateProposedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

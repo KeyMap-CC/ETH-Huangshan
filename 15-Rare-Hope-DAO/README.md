@@ -6,13 +6,13 @@
 
 ### 技术栈：
 
-前端：Vite，Typescript, Rainbowkit
+前端：React, Vite，Typescript, Rainbowkit
 
 后端：Foundry, Solidity, 部署在 Holesky testnet
 
 | 合约     | 地址                                                                                                                               |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| DAO 合约 | [0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB](https://holesky.etherscan.io/address/0x2D4Eda9DA70aC43AedceE5BF1319798F485852DB#code) |
+| DAO 合约 | [0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b](https://holesky.etherscan.io/address/0x734CEb19cDDAbf7B2e28eb0105bd94c34BE7022b#code) |
 
 ### 安装与运行指南：
 
