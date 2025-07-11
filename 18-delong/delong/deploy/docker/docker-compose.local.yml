@@ -1,0 +1,147 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: delong_test_2025
+      MYSQL_DATABASE: delong
+    tmpfs:
+      - /var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 3
+
+  anvil:
+    image: aztecprotocol/foundry:25f24e677a6a32a62512ad4f561995589ac2c7dc
+    command:
+      ["anvil", "--host", "0.0.0.0", "--port", "8545", "--chain-id", "31337"]
+    tmpfs:
+      - /data/anvil
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test:
+        ["CMD", "cast", "block-number", "--rpc-url", "http://localhost:8545"]
+      timeout: 10s
+      retries: 3
+
+  ipfs:
+    image: ipfs/kubo:latest
+    tmpfs:
+      - /root/.ipfs
+    expose:
+      - "5001"
+      - "8080"
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      timeout: 10s
+      retries: 3
+
+  dstack-simulator:
+    image: lilhammer/dstack-simulator:latest
+    expose:
+      - "8090"
+    volumes:
+      - simulator_sockets:/app/sockets
+
+  delong:
+    build:
+      context: ../../
+      dockerfile: deploy/docker/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - DSTACK_CLIENT_TYPE=${DSTACK_CLIENT_TYPE}
+      - IPFS_ADDR=${IPFS_ADDR}
+      - ETH_HTTP_URL=${ETH_HTTP_URL}
+      - ETH_WS_URL=${ETH_WS_URL}
+      - CHAIN_ID=${CHAIN_ID}
+      - MYSQL_DSN=${MYSQL_DSN}
+      - DSTACK_SIMULATOR_ENDPOINT=${DSTACK_SIMULATOR_ENDPOINT}
+      - OFFICIAL_ACCOUNT_PRIVATE_KEY=${OFFICIAL_ACCOUNT_PRIVATE_KEY}
+      - USE_JWT=${USE_JWT}
+      - JWT_SECRET=${JWT_SECRET}
+      - SAMPLE_SRV_ADDR=${SAMPLE_SRV_ADDR}
+      - DIAGNOSTIC_SRV_ADDR=${DIAGNOSTIC_SRV_ADDR}
+    volumes:
+      - delong_dataset:/data/delong_dataset
+      - $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock
+      - simulator_sockets:/app/sockets
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ipfs:
+        condition: service_healthy
+      anvil:
+        condition: service_healthy
+      delong-datapipe:
+        condition: service_healthy
+      dstack-simulator:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      timeout: 10s
+      retries: 3
+      interval: 30s
+
+  delong-datapipe:
+    image: lilhammer/delong-pipeline:latest
+    expose:
+      - "8018"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8018/api/health"]
+      timeout: 10s
+      retries: 3
+      interval: 30s
+
+  test-runner:
+    build:
+      context: ../../
+      dockerfile: deploy/docker/Dockerfile.test
+    env_file:
+      - .env
+    environment:
+      - DSTACK_CLIENT_TYPE=${DSTACK_CLIENT_TYPE}
+      - IPFS_ADDR=${IPFS_ADDR}
+      - ETH_HTTP_URL=${ETH_HTTP_URL}
+      - ETH_WS_URL=${ETH_WS_URL}
+      - CHAIN_ID=${CHAIN_ID}
+      - MYSQL_DSN=${MYSQL_DSN}
+      - DSTACK_SIMULATOR_ENDPOINT=${DSTACK_SIMULATOR_ENDPOINT}
+      - OFFICIAL_ACCOUNT_PRIVATE_KEY=${OFFICIAL_ACCOUNT_PRIVATE_KEY}
+      - USE_JWT=${USE_JWT}
+      - JWT_SECRET=${JWT_SECRET}
+      - SAMPLE_SRV_ADDR=${SAMPLE_SRV_ADDR}
+      - DIAGNOSTIC_SRV_ADDR=${DIAGNOSTIC_SRV_ADDR}
+      - TEST_BASE_URL=http://delong:8080/api
+      - TEST_WS_URL=ws://delong:8080/ws
+    volumes:
+      - ../../:/app
+      - go_mod_cache:/go/pkg/mod
+      - $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock
+      - simulator_sockets:/app/sockets
+    working_dir: /app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ipfs:
+        condition: service_healthy
+      delong-datapipe:
+        condition: service_healthy
+      anvil:
+        condition: service_healthy
+      dstack-simulator:
+        condition: service_started
+      delong:
+        condition: service_healthy
+
+volumes:
+  simulator_sockets:
+  delong_dataset:
+  go_mod_cache:

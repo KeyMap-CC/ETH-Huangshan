@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shield Favicon Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin: 20px 0;
+    }
+    .instructions {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shield Favicon Generator</h1>
+  
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <ol>
+      <li>Below is a canvas with the shield icon rendered at favicon size (32x32)</li>
+      <li>Right-click on the canvas and select "Save Image As..."</li>
+      <li>Save it as "favicon.ico" in the public folder</li>
+      <li>Alternatively, you can click the "Download Favicon" button below</li>
+    </ol>
+  </div>
+  
+  <canvas id="faviconCanvas" width="32" height="32"></canvas>
+  <br>
+  <button id="downloadBtn">Download Favicon</button>
+  
+  <script>
+    // Get the canvas and context
+    const canvas = document.getElementById('faviconCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Draw the shield
+    function drawShield() {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Scale the path to fit the canvas
+      ctx.save();
+      ctx.scale(32/24, 32/24);
+      
+      // Draw shield path
+      ctx.beginPath();
+      ctx.moveTo(12, 1);
+      ctx.lineTo(3, 5);
+      ctx.lineTo(3, 11);
+      ctx.bezierCurveTo(3, 16.55, 6.84, 21.74, 12, 23);
+      ctx.bezierCurveTo(17.16, 21.74, 21, 16.55, 21, 11);
+      ctx.lineTo(21, 5);
+      ctx.lineTo(12, 1);
+      ctx.closePath();
+      
+      // Fill with teal color
+      ctx.fillStyle = '#319795';
+      ctx.fill();
+      
+      ctx.restore();
+    }
+    
+    // Draw the shield
+    drawShield();
+    
+    // Download functionality
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      // Create a link element
+      const link = document.createElement('a');
+      
+      // Convert canvas to data URL
+      const dataURL = canvas.toDataURL('image/png');
+      
+      // Set link attributes
+      link.download = 'favicon.ico';
+      link.href = dataURL;
+      
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  </script>
+</body>
+</html>
