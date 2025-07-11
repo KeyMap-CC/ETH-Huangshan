@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -68,38 +69,55 @@ const BadgeSendDialog: React.FC<BadgeSendDialogProps> = ({
         signer
       );
 
+      // 首先检查徽章类型是否存在
+      console.log('Checking if badge type exists:', selectedBadgeType);
+      const badgeTypeExists = await contract.badgeTypes(selectedBadgeType);
+      console.log('Badge type exists:', badgeTypeExists);
+
+      // 如果徽章类型不存在，先添加它
+      if (!badgeTypeExists) {
+        console.log('Adding badge type to contract:', selectedBadgeType);
+        const badgeMetadata = JSON.stringify({
+          name: BADGE_TYPES[selectedBadgeType].label,
+          description: BADGE_TYPES[selectedBadgeType].description,
+          icon: BADGE_TYPES[selectedBadgeType].icon,
+        });
+
+        const addBadgeTypeTx = await contract.addBadgeType(selectedBadgeType, badgeMetadata);
+        await addBadgeTypeTx.wait();
+        console.log('Badge type added successfully');
+
+        toast({
+          title: "徽章类型已添加",
+          description: `已添加 ${BADGE_TYPES[selectedBadgeType].label} 徽章类型到合约`,
+        });
+      }
+
       // 生成元数据URI
       const metadata = JSON.stringify({
         name: BADGE_TYPES[selectedBadgeType].label,
         description: BADGE_TYPES[selectedBadgeType].description,
-        image: `data:image/svg+xml;base64,${btoa(`
-          <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-            <rect width="200" height="200" fill="#f0f9ff"/>
-            <circle cx="100" cy="80" r="40" fill="#3b82f6"/>
-            <text x="100" y="90" text-anchor="middle" font-size="24" fill="white">
-              ${BADGE_TYPES[selectedBadgeType].icon}
-            </text>
-            <text x="100" y="140" text-anchor="middle" font-size="16" fill="#1e40af">
-              ${BADGE_TYPES[selectedBadgeType].label}
-            </text>
-            <text x="100" y="165" text-anchor="middle" font-size="12" fill="#64748b">
-              ${BADGE_TYPES[selectedBadgeType].description}
-            </text>
-          </svg>
-        `)}`,
+        image: `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(selectedBadgeType)}`,
         attributes: [
           {
             trait_type: "Badge Type",
             value: selectedBadgeType
           },
           {
-            trait_type: "Category",
+            trait_type: "Platform",
             value: "Community Contribution"
           }
         ]
       });
 
-      const metadataUri = `data:application/json;base64,${btoa(metadata)}`;
+      // 使用正确的方式处理UTF-8字符
+      const metadataUri = `data:application/json;base64,${btoa(unescape(encodeURIComponent(metadata)))}`;
+
+      console.log('Minting badge with params:', {
+        recipient: driverWalletAddress,
+        badgeType: selectedBadgeType,
+        metadataUri: metadataUri.substring(0, 100) + '...'
+      });
 
       // 调用合约铸造徽章
       const tx = await contract.mintBadge(
@@ -125,9 +143,21 @@ const BadgeSendDialog: React.FC<BadgeSendDialogProps> = ({
 
     } catch (error: any) {
       console.error('发送徽章失败:', error);
+      
+      let errorMessage = "发送徽章时发生错误";
+      if (error.message) {
+        if (error.message.includes("Invalid badge type")) {
+          errorMessage = "无效的徽章类型，请联系管理员";
+        } else if (error.message.includes("user rejected")) {
+          errorMessage = "用户取消了交易";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "发送失败",
-        description: error.message || "发送徽章时发生错误",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

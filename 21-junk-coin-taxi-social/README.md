@@ -1,80 +1,73 @@
-项目名称：山寨币（垃圾币）打车
+# Welcome to your Lovable project
 
-项目描述：Junk Coin Taxi Social 是一个关联了区块链技术的社区拼车平台，结合了Web3钱包、智能合约和现代前端技术，为社区管理员、愿意开车的社区在地伙伴和来访伙伴们提供便捷的信息整理和发布服务。
+## Project info
 
-## 解决的问题
-- 降低社区伙伴们拼车出行时的沟通成本
-- 提升社区内服务的丰富度，增加社区内互动性
-- 降低社区管理员举办活动时管理和安排出行的成本
+**URL**: https://lovable.dev/projects/e044e030-1219-421d-866b-b28e4083b2e0
 
-## 主要功能
-- 快速组队 : 通过设置司机承载量和乘客人数、行李数快速计算多名乘客能否同车出行
-- 社区管理 : 在数字游民社区总有举办活动的需要，社区管理员可以快速设置主要交通枢纽与社区之间的固定路线
-- 服务型社交 : 在数字游民社区总有朋友拥有车辆，他们可以通过服务来往社区的伙伴进行社交并获得收益和声望
-- 加密支付 : 朋友们可以在Web3环境下使用加密货币进行支付，确保交易的安全和透明
-- SBT奖励 : 社区成员通过服务型社交获得的SBT奖励可以用于交易时的认证和展示，增加用户对社区的信任感
+## How can I edit this code?
 
-技术栈
+There are several ways of editing your application.
 
-### 前端技术
-- **React 18 + TypeScript**: 现代化前端框架，提供类型安全
-- **Vite**: 极速构建工具，优化开发体验
-- **Tailwind CSS**: 原子化CSS框架，快速构建响应式UI
-- **Radix UI**: 无障碍组件库，确保用户体验
+**Use Lovable**
 
-### 后端服务
-- **Supabase**: 现代化BaaS平台
-  - PostgreSQL数据库
-  - 实时订阅功能
-  - 用户认证系统
-  - Edge Functions无服务器计算
+Simply visit the [Lovable Project](https://lovable.dev/projects/e044e030-1219-421d-866b-b28e4083b2e0) and start prompting.
 
-### 区块链技术栈
-- **Solidity ^0.8.0**: 智能合约开发语言
-- **Hardhat**: 以太坊开发环境
-  - 本地区块链网络
-  - 智能合约编译和部署
-  - 自动化测试框架
-- **OpenZeppelin Contracts**: 安全的智能合约库
-- **ethers.js**: 以太坊JavaScript库
+Changes made via Lovable will be committed automatically to this repo.
 
-项目亮点/创新点
+**Use your preferred IDE**
 
-### 🏆 1. 首创SBT驱动的社区拼车平台
-- **灵魂绑定代币**: 将每次成功的拼车服务转化为不可转让的数字声誉
-- **防刷单机制**: SBT的不可转让特性天然防止虚假交易
-- **社区信任体系**: 基于区块链的透明信誉积累机制
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-### 🌐 2. Web3原生的社区治理
-- **去中心化决策**: 徽章持有者参与路线规划和社区规则制定
-- **透明激励**: 所有奖励和惩罚机制公开透明，无法被篡改
-- **数据主权**: 用户完全拥有自己的出行数据和社交记录
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-### 🚀 3. 创新的数字游民社区解决方案
-- **动态路线管理**: 社区管理员可实时调整热门路线
-- **智能匹配算法**: 基于车辆容量、行李数量的精确匹配
-- **跨地域适应性**: 支持不同城市的数字游民社区快速部署
+Follow these steps:
 
-### 🔐 4. 混合架构的最佳实践
-- **链上+链下结合**: 关键数据上链，日常交互链下处理
-- **渐进式Web3**: 传统用户可无感体验，Web3用户享受完整功能
-- **多链兼容设计**: 架构支持未来扩展到其他EVM兼容链
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-### 💡 5. 技术创新亮点
-- **实时状态同步**: Supabase实时订阅 + 区块链事件监听
-- **Gas优化策略**: 批量操作和事件聚合减少交易成本
-- **安全审计**: 使用OpenZeppelin + Wake静态分析确保合约安全
-- **响应式设计**: 移动优先的PWA架构，支持离线使用
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-### 🎯 6. 商业模式创新
-- **零平台抽成**: 去中心化架构消除中间商
-- **社区自治**: 收益分配由社区投票决定
-- **可持续发展**: SBT激励机制促进长期社区建设
+# Step 3: Install the necessary dependencies.
+npm i
 
----
+# Step 4: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
 
-**为什么与众不同？**
+**Edit a file directly in GitHub**
 
-这不仅仅是一个拼车应用，而是Web3技术在真实社区场景中的创新实践。我们将区块链的去中心化、透明性和不可篡改特性与数字游民社区的实际需求完美结合，创造了一个既有技术深度又有实用价值的解决方案。
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-通过SBT机制，我们重新定义了"信任"在共享经济中的价值，让每一次服务都成为构建更强社区的贡献。这种模式不仅适用于拼车，更可以扩展到整个数字游民生态系统的各种服务场景。
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/e044e030-1219-421d-866b-b28e4083b2e0) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes, you can!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
