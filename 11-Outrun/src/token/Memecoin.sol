@@ -9,31 +9,26 @@ import { OutrunOFTInit } from "../common/layerzero/oft/OutrunOFTInit.sol";
  */
 contract Memecoin is IMemecoin, OutrunOFTInit {
     address public memeverseLauncher;
-    address public genesisLiquidityPool;
 
-    modifier onlyMemeverseLauncher {
-        require(msg.sender == memeverseLauncher, PermissionDenied());
-        _;
-    }
+    /**
+     * @param _lzEndpoint The local LayerZero endpoint address.
+     */
+    constructor(address _lzEndpoint) OutrunOFTInit(_lzEndpoint) {}
 
     /**
      * @notice Initialize the memecoin.
      * @param name_ - The name of the memecoin.
      * @param symbol_ - The symbol of the memecoin.
-     * @param decimals_ - The decimals of the memecoin.
      * @param _memeverseLauncher - The address of the memeverse launcher.
-     * @param _lzEndpoint - The address of the LayerZero endpoint.
-     * @param _delegate - The address of the delegate.
+     * @param _delegate - The address of the OFT delegate.
      */
     function initialize(
         string memory name_, 
         string memory symbol_,
-        uint8 decimals_, 
         address _memeverseLauncher, 
-        address _lzEndpoint,
         address _delegate
     ) external override initializer {
-        __OutrunOFT_init(name_, symbol_, decimals_, _lzEndpoint, _delegate);
+        __OutrunOFT_init(name_, symbol_, _delegate);
         __OutrunOwnable_init(_delegate);
 
         memeverseLauncher = _memeverseLauncher;
@@ -44,7 +39,9 @@ contract Memecoin is IMemecoin, OutrunOFTInit {
      * @param account - The address of the account.
      * @param amount - The amount of the memecoin.
      */
-    function mint(address account, uint256 amount) external override onlyMemeverseLauncher {
+    function mint(address account, uint256 amount) external override {
+        require(amount != 0, ZeroInput());
+        require(msg.sender == memeverseLauncher, PermissionDenied());
         _mint(account, amount);
     }
 
@@ -53,8 +50,7 @@ contract Memecoin is IMemecoin, OutrunOFTInit {
      * @param amount - The amount of the memecoin.
      */
     function burn(uint256 amount) external override {
-        address msgSender = msg.sender;
-        require(balanceOf(msgSender) >= amount, InsufficientBalance());
-        _burn(msgSender, amount);
+        require(amount != 0, ZeroInput());
+        _burn(msg.sender, amount);
     }
 }
