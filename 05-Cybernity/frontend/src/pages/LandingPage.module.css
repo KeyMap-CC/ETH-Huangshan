@@ -1,0 +1,361 @@
+.landingPageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.landingPageContainer.exiting {
+  opacity: 0;
+}
+
+.corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(100, 255, 218, 0.2); /* 降低亮度，更微妙 */
+  opacity: 1; /* 始终可见 */
+  z-index: 5; /* 确保在内容之上 */
+}
+.topLeft { top: 2rem; left: 2rem; border-right: none; border-bottom: none; }
+.topRight { top: 2rem; right: 2rem; border-left: none; border-bottom: none; }
+.bottomLeft { bottom: 2rem; left: 2rem; border-right: none; border-top: none; }
+.bottomRight { bottom: 2rem; right: 2rem; border-left: none; border-top: none; }
+
+.gridBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(100, 255, 218, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 255, 218, 0.07) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: grid-pan 30s linear infinite;
+  z-index: -1;
+}
+
+@keyframes grid-pan {
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+.contentContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.pageWrapper.active {
+  opacity: 1;
+}
+
+.overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+  
+  & > * {
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+}
+
+.overlay h1,
+.overlay p,
+.ctaButton,
+.pageContent h2,
+.pageContent p {
+  opacity: 0;
+}
+
+@keyframes reveal-in {
+  from { clip-path: inset(0 0 100% 0); opacity: 0; }
+  to { clip-path: inset(0 0 0% 0); opacity: 1; }
+}
+
+@keyframes fade-out-up {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-30px); }
+}
+
+.pageWrapper.active h1,
+.pageWrapper.active h2 {
+  animation: reveal-in 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.pageWrapper.active p {
+  animation: reveal-in 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+.pageWrapper.active .ctaButton:nth-of-type(1) {
+  animation: reveal-in 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.8s forwards;
+}
+
+.pageWrapper.active .ctaButton:nth-of-type(2) {
+  animation: reveal-in 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.95s forwards;
+}
+
+.pageWrapper.exiting h1,
+.pageWrapper.exiting h2,
+.pageWrapper.exiting p,
+.pageWrapper.exiting .ctaButton {
+  animation: fade-out-up 0.5s ease-out forwards;
+}
+
+.overlay h1 {
+  font-size: 5rem; /* 放大标题 */
+  font-weight: 700; /* 加粗 */
+  letter-spacing: 0.05em;
+  background: linear-gradient(
+    110deg,
+    rgba(100, 255, 218, 0.8) 15%,
+    rgba(216, 180, 254, 1) 40%,
+    rgba(230, 241, 255, 0.9) 60%,
+    rgba(100, 255, 218, 0.8) 85%
+  );
+  background-size: 300% auto;
+  color: #000;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aurora-flow 8s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+.overlay p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(230, 241, 255, 0.8);
+  text-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+  margin-top: 1rem;
+}
+
+.buttonContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center; /* 确保按钮在容器内始终居中 */
+  gap: 1.5rem;
+  pointer-events: auto;
+}
+
+.ctaButton {
+  padding: 1rem 2.2rem; /* 增加内边距以放大按钮 */
+  font-size: 1.1rem; /* 放大字体 */
+  font-weight: 500;
+  color: #ccd6f6;
+  background: rgba(100, 255, 218, 0.1);
+  border: 1px solid rgba(100, 255, 218, 0.5);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: auto;
+  letter-spacing: 0.05em;
+}
+
+.ctaButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.3), transparent);
+  transition: left 0.6s ease;
+  z-index: -1;
+  transform: skewX(-25deg);
+}
+
+.ctaButton:hover::after {
+  left: 150%;
+}
+
+.ctaButton:hover {
+  background: rgba(100, 255, 218, 0.2);
+  border-color: rgba(100, 255, 218, 0.8);
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  color: #fff;
+}
+
+.secondaryButton {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+}
+
+.pageContent {
+  position: relative;
+  width: 100%;
+  max-width: 1200px; /* 再次扩大舞台，提供充足空间 */
+  padding: 2rem;
+  text-align: center;
+  color: #fff;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.pageContent h2 {
+  font-size: 3rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: #ccd6f6;
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
+}
+
+.pageContent p {
+  max-width: 800px;
+  line-height: 2; /* 增大行高，让分行文字有呼吸感 */
+  font-family: 'Alibaba PuHuiTi 2.0', 'Georgia', 'SimSun', sans-serif;
+  color: #a6adc8;
+  display: flex;
+  flex-direction: column; /* 让span像block元素一样换行 */
+}
+
+/* --- New Styles for Illustration --- */
+.illustrationContainer {
+  position: absolute;
+  top: 60%;
+  right: -4rem; /* 使用负值将其推向右侧，确保与文本不重叠 */
+  transform: translateY(-50%);
+  width: 60%; /* 占据一半空间 */
+  height: 100%; /* 占满高度 */
+  max-width: 1000px;
+  pointer-events: none;
+  opacity: 0; /* Start hidden for animation */
+  z-index: 0; /* Behind text content */
+}
+
+/* 新增：左侧插画的定位 */
+.illustrationLeft {
+  left: -1rem;
+  top: 50%;
+  right: auto;
+}
+
+/* Apply animation when its page is active */
+.pageWrapper.active .illustrationContainer {
+  animation: reveal-in 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.8s forwards; /* Appear after text */
+}
+
+/* Make sure the text content is on top */
+.pageContent h2,
+.pageContent p {
+  position: relative;
+  z-index: 1;
+}
+/* --- End New Styles --- */
+
+/* 新增：逐行动画的样式和动画定义 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.line {
+  display: inline-block; /* 允许transform */
+  opacity: 0; /* 默认隐藏 */
+  animation: fadeInUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* --- 新增：多变的现代化布局 --- */
+
+/* 布局1: 左对齐 */
+.layoutLeftAligned {
+  align-items: flex-start; /* Changed from center */
+  text-align: left;
+  justify-content: flex-start; /* Align content to the left */
+}
+
+.layoutLeftAligned .textBlock {
+  align-self: flex-start;
+  margin-left: 6rem;
+  max-width: 50%; /* 为标题提供更充足的空间 */
+}
+
+/* 布局2: 左右分割，标题在右 */
+.layoutSplitRightTitle {
+  display: flex; /* Make it a flex container */
+  justify-content: flex-end; /* Push flex items (the textBlock) to the right */
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.layoutSplitRightTitle .textBlock {
+  width: 45%; /* 限制文本宽度 */
+  text-align: right; /* 文本右对齐 */
+  margin-right: 6rem; /* ADD this for perfect symmetry with page 2 */
+}
+
+.layoutSplitRightTitle .gridBackground {
+  display: none; /* 在此布局中隐藏网格，避免视觉混乱 */
+}
+
+/* 布局3: 最终居中，更聚焦 */
+.layoutCenterFinal {
+  max-width: 700px; /* 宽度收窄，形成“诗柱” */
+  justify-content: center;
+}
+
+.layoutCenterFinal h2 {
+  color: #64ffda; /* 用品牌色高亮标题 */
+  font-weight: 600;
+}
+
+/* 新增：高亮文本的样式 */
+.highlightedText {
+  color: #64ffda;
+  font-weight: 600; /* 加粗以突出显示 */
+  text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
+  transition: color 0.3s, text-shadow 0.3s;
+} 

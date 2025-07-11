@@ -1,0 +1,136 @@
+/* ======================================= */
+/*          1. 卡片总容器样式             */
+/* ======================================= */
+.card {
+  width: 320px;
+  box-sizing: border-box;
+  background: rgba(25, 28, 36, 0.6);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: default;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+  border-color: rgba(0, 255, 255, 0.5);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0, rgba(0, 255, 255, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* ======================================= */
+/*          2. 信息区域 (上部)             */
+/* ======================================= */
+.mainContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bio {
+  font-size: 0.9rem;
+  color: #a9b7d1;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* ======================================= */
+/*          3. 按钮区域 (底部)             */
+/* ======================================= */
+.consultButton {
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, rgba(0, 122, 133, 0.4), rgba(0, 188, 204, 0.4));
+  color: #e0f2f1;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+.consultButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.8));
+  transition: left 0.4s ease;
+}
+
+.consultButton:hover::before {
+  left: 100%;
+}
+
+.consultButton::after {
+  content: '→';
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.consultButton:hover {
+  background: linear-gradient(90deg, rgba(0, 188, 204, 0.5), rgba(0, 225, 255, 0.5));
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+  transform: scale(1.05);
+}
+
+.consultButton:hover::after {
+  transform: translateX(5px);
+}

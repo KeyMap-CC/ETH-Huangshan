@@ -1,0 +1,64 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 4rem;
+  box-sizing: border-box;
+  animation: fadeIn 0.5s ease-in;
+  position: relative;
+  z-index: 2;
+
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden; /* 消灭水平滚动条 */
+
+  /* 统一滚动条样式 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 255, 218, 0.3) transparent;
+}
+
+/* 为容器应用自定义滚动条 */
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+.container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 255, 218, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(100, 255, 218, 0.5);
+}
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 255, 218, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.agentList {
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+  gap: 2rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+  /* 移除不再需要的滚动条相关内边距和样式 */
+} 
+
+.message,
+.error {
+  color: #c5c6c7;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.error {
+  color: #ff6b6b;
+} 
