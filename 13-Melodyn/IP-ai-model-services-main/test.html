@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Model Chat Service - 测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-post {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-post:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-get {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-get:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+        
+        .btn-health {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .btn-health:hover {
+            background: #dd7724;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background: #4299e1;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+        }
+        
+        .response {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .response h3 {
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+        
+        .response pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            border-left-color: #e53e3e;
+            background: #fed7d7;
+        }
+        
+        .success {
+            border-left-color: #48bb78;
+            background: #c6f6d5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 IP Model Chat Service</h1>
+            <p>简化的聊天API测试界面</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-group">
+                <label for="queryInput">输入您的问题:</label>
+                <input type="text" id="queryInput" placeholder="例如: 你好，请介绍一下自己" value="你好">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-post" onclick="sendQuery('POST')">POST 查询</button>
+                <button class="btn-get" onclick="sendQuery('GET')">GET 查询</button>
+                <button class="btn-health" onclick="checkHealth()">健康检查</button>
+                <button class="btn-info" onclick="getInfo()">API 信息</button>
+            </div>
+            
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>正在处理请求...</p>
+            </div>
+            
+            <div id="response" class="response" style="display: none;">
+                <h3>响应结果:</h3>
+                <pre id="responseContent"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+        
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('response').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        function showResponse(data, isError = false) {
+            hideLoading();
+            const responseDiv = document.getElementById('response');
+            const responseContent = document.getElementById('responseContent');
+            
+            responseDiv.className = `response ${isError ? 'error' : 'success'}`;
+            responseContent.textContent = JSON.stringify(data, null, 2);
+            responseDiv.style.display = 'block';
+        }
+        
+        async function sendQuery(method) {
+            const query = document.getElementById('queryInput').value.trim();
+            
+            if (!query) {
+                alert('请输入查询内容！');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                let response;
+                
+                if (method === 'POST') {
+                    response = await fetch(`${API_BASE_URL}/query`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ query })
+                    });
+                } else {
+                    response = await fetch(`${API_BASE_URL}/query?query=${encodeURIComponent(query)}`);
+                }
+                
+                const data = await response.json();
+                showResponse(data, !response.ok);
+                
+            } catch (error) {
+                showResponse({
+                    error: '请求失败',
+                    message: error.message,
+                    tip: '请确保服务器正在运行'
+                }, true);
+            }
+        }
+        
+        async function checkHealth() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                showResponse(data, !response.ok);
+            } catch (error) {
+                showResponse({
+                    error: '健康检查失败',
+                    message: error.message,
+                    tip: '请确保服务器正在运行'
+                }, true);
+            }
+        }
+        
+        async function getInfo() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/info`);
+                const data = await response.json();
+                showResponse(data, !response.ok);
+            } catch (error) {
+                showResponse({
+                    error: '获取API信息失败',
+                    message: error.message,
+                    tip: '请确保服务器正在运行'
+                }, true);
+            }
+        }
+        
+        // 回车键发送查询
+        document.getElementById('queryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendQuery('POST');
+            }
+        });
+        
+        // 页面加载完成后自动检查健康状态
+        window.addEventListener('load', function() {
+            setTimeout(checkHealth, 500);
+        });
+    </script>
+</body>
+</html>
