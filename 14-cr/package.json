@@ -1,0 +1,52 @@
+{
+  "name": "@continue-reasoning/coding",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Interactive CLI coding assistant for continue-reasoning framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "cr": "./dist/start.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@continue-reasoning/core": "0.1.0",
+    "@continue-reasoning/react-cli": "0.1.0",
+    "@types/uuid": "^10.0.0",
+    "commander": "^12.0.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5",
+    "vitest": "^3.1.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cyl19970726/continue-reasoning"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "coding",
+    "cli",
+    "assistant"
+  ],
+  "license": "MIT",
+  "author": "Continue Reasoning Team"
+}
