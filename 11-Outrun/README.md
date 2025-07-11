@@ -6,6 +6,12 @@ For each Community Token, a corresponding Community Token Yield Vault and Commun
 
 For more details, please refer to the product documentation : [Outrun Official Doc](https://outrun.gitbook.io/doc "Outrun Official Doc")
 
+Test Website: https://testnet.outrun.build/
+
+Member: 
+  Contract & Product：Jason 
+  Frontend: Dawn
+
 ## Contract(EVM OmniChain)
 
 ### MemeverseRegistrationCenter(BNB Testnet)
